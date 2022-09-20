@@ -1,0 +1,2029 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/20/2022 10:18:07 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="CAROL-NOTE"
+  DTS:CreatorName="CAROL-NOTE\Carol"
+  DTS:DTSID="{F83ED396-4705-4D19-8D6D-3AED3FF2CF48}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.94"
+  DTS:LocaleID="1046"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="75"
+  DTS:VersionGUID="{016AC4AB-E681-48A7-A386-28BBA940AE72}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{0CEB0C97-8396-4F74-991D-DD4798A67701}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="apiKey">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{397A03E3-8E75-4CFE-B063-0087C169CC7D}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="channelID">
+      <DTS:VariableValue
+        DTS:DataType="8">UCyXRmWbmyB7TSJekXsPCZKQ</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{39DA2739-D339-4E1F-9729-19983846F25D}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="diretorioDados">
+      <DTS:VariableValue
+        DTS:DataType="8">C:\Projetos\Youtube\Dados\</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{E2DBF39E-6280-4E29-8156-8B92BF5E104C}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="existeDia">
+      <DTS:VariableValue
+        DTS:DataType="11">0</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Buscar Data Estatisticas"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarefa Executar SQL"
+      DTS:DTSID="{f9bfde84-7512-4d53-a9d9-8798d76e01d1}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Buscar Data Estatisticas"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D2AEC464-4F1D-4C16-A75F-DF9E86F88A45}"
+          SQLTask:BypassPrepare="False"
+          SQLTask:SqlStatementSource="IF (SELECT [DATA] FROM [YOUTUBE_STAGE].[dbo].[CANAL_ESTATISTICAS] WHERE [DATA] = CAST(GETDATE() AS DATE)) IS NULL &#xA;SELECT 'False' as existeDia&#xA;ELSE SELECT 'True' as existeDia"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="existeDia"
+            SQLTask:DtsVariableName="User::existeDia" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Criar Tabela Canal"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Tarefa Fluxo de Dados"
+      DTS:DTSID="{BFBD470F-701A-4A48-96FA-5E87D3C828C9}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Criar Tabela Canal"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Criar Tabela Canal\CANAL"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="Destino OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos os Direitos Reservados; http://www.microsoft.com/sql/support;4"
+              description="Destino OLE DB"
+              name="CANAL"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="O tempo em segundos antes que um comando expire. Zero indica uma expiração infinita."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica o nome do objeto de banco de dados usado para abrir um conjunto de linhas."
+                  name="OpenRowset">[CANAL]</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica a variável que contém o nome do objeto de banco de dados usado para abrir um conjunto de linhas."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="O comando SQL a ser executado."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica a página de código de coluna a ser usada quando não há informações de página de código disponíveis a partir da fonte de dados."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forca o uso do valor da propriedade DefaultCodePage durante a descrição dos dados de caractere."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica o modo usado para acessar o banco de dados."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indica se os valores fornecidos para colunas de identidade serão copiados no destino. Se false, os valores para colunas de identidade serão gerados automaticamente no destino. Aplicável apenas se o carregamento rápido estiver ativado."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indica se as colunas que contêm null terão null inserido no destino. Se false, as colunas que contêm null terão seus valores padrão inseridos no destino. Aplicável apenas se o carregamento rápido estiver ativado."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica as opções a serem usadas com o carregamento rápido. Aplicável apenas se o carregamento rápido estiver ativado."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica quando confirmações são emitidas durante a inserção de dados. Um valor de 0 especifica que uma confirmação será emitida ao final da inserção de dados. Aplicável somente se o carregamento rápido estiver ativado."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Criar Tabela Canal\CANAL.Connections[OleDbConnection]"
+                  connectionManagerID="{D2AEC464-4F1D-4C16-A75F-DF9E86F88A45}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[CAROL-NOTE.YOUTUBE_STAGE]"
+                  description="A conexão de tempo de execução OLE DB usada para acessar o banco de dados."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB]"
+                  errorOrTruncationOperation="Inserir"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="Entrada de Destino OLE DB">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].Columns[id]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="id"
+                      externalMetadataColumnId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].ExternalColumns[ID]"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[id]" />
+                    <inputColumn
+                      refId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].Columns[titulo]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="titulo"
+                      externalMetadataColumnId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].ExternalColumns[TITULO]"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[titulo]" />
+                    <inputColumn
+                      refId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].Columns[descricao]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="descricao"
+                      externalMetadataColumnId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].ExternalColumns[DESCRICAO]"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[descricao]" />
+                    <inputColumn
+                      refId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].Columns[imagem]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="200"
+                      cachedName="imagem"
+                      externalMetadataColumnId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].ExternalColumns[IMAGEM]"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[imagem]" />
+                    <inputColumn
+                      refId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].Columns[dataCriacao]"
+                      cachedDataType="dbDate"
+                      cachedName="dataCriacao"
+                      externalMetadataColumnId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].ExternalColumns[DATA_CRIACAO]"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[dataCriacao]" />
+                    <inputColumn
+                      refId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].Columns[playlistID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="30"
+                      cachedName="playlistID"
+                      externalMetadataColumnId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].ExternalColumns[PLAYLIST_ID]"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[playlistID]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].ExternalColumns[ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="ID" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].ExternalColumns[TITULO]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="TITULO" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].ExternalColumns[DESCRICAO]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="DESCRICAO" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].ExternalColumns[DATA_CRIACAO]"
+                      dataType="dbDate"
+                      name="DATA_CRIACAO" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].ExternalColumns[IMAGEM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="IMAGEM" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB].ExternalColumns[PLAYLIST_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="PLAYLIST_ID" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Criar Tabela Canal\CANAL.Outputs[Saída de Erro de Destino OLE DB]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Saída de Erro de Destino OLE DB"
+                  synchronousInputId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\CANAL.Outputs[Saída de Erro de Destino OLE DB].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Criar Tabela Canal\CANAL.Outputs[Saída de Erro de Destino OLE DB].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\CANAL.Outputs[Saída de Erro de Destino OLE DB].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Criar Tabela Canal\CANAL.Outputs[Saída de Erro de Destino OLE DB].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Criar Tabela Canal\Origem OLE DB"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="Origem OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos os Direitos Reservados; http://www.microsoft.com/sql/support;7"
+              description="Origem OLE DB"
+              name="Origem OLE DB"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="O tempo em segundos antes que um comando expire. Zero indica uma expiração infinita."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica o nome do objeto de banco de dados usado para abrir um conjunto de linhas."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Especifica a variável que contém o nome do objeto de banco de dados usado para abrir um conjunto de linhas."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="O comando SQL a ser executado."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">DECLARE @JSON VARCHAR(MAX);
+SET @JSON = (SELECT BulkColumn FROM OPENROWSET (BULK 'C:\Projetos\Youtube\Dados\canal.json', SINGLE_CLOB) as j)
+
+SELECT * FROM OPENJSON (@JSON, '$.items')
+WITH (
+	id                    varchar(20)  '$.id',
+	titulo                varchar(50)  '$.snippet.title',
+	descricao             varchar(100) '$.snippet.description',
+	dataCriacao           date         '$.snippet.publishedAt',
+	imagem                varchar(200) '$.snippet.thumbnails.medium.url',
+                playlistID   varchar(30)  '$.contentDetails.relatedPlaylists.uploads'
+)</property>
+                <property
+                  dataType="System.String"
+                  description="A variável que contém o comando SQL a ser executado."
+                  name="SqlCommandVariable">User::diretorioDados</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica a página de código de coluna a ser usada quando não há informações de página de código disponíveis a partir da fonte de dados."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forca o uso do valor da propriedade DefaultCodePage durante a descrição dos dados de caractere."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica o modo usado para acessar o banco de dados."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="Os mapeamentos entre os parâmetros no comando SQL e as variáveis."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Criar Tabela Canal\Origem OLE DB.Connections[OleDbConnection]"
+                  connectionManagerID="{D2AEC464-4F1D-4C16-A75F-DF9E86F88A45}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[CAROL-NOTE.YOUTUBE_STAGE]"
+                  description="A conexão de tempo de execução OLE DB usada para acessar o banco de dados."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB]"
+                  name="Saída de Origem OLE DB">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[id]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversão"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[id]"
+                      length="20"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[id]"
+                      name="id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[titulo]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversão"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[titulo]"
+                      length="50"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[titulo]"
+                      name="titulo"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[descricao]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversão"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[descricao]"
+                      length="100"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[descricao]"
+                      name="descricao"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[dataCriacao]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Conversão"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[dataCriacao]"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[dataCriacao]"
+                      name="dataCriacao"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[imagem]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversão"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[imagem]"
+                      length="200"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[imagem]"
+                      name="imagem"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[playlistID]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversão"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[playlistID]"
+                      length="30"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[playlistID]"
+                      name="playlistID"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[id]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="id" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[titulo]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="titulo" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[descricao]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="descricao" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[dataCriacao]"
+                      dataType="dbDate"
+                      name="dataCriacao" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[imagem]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="imagem" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[playlistID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="playlistID" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB]"
+                  isErrorOut="true"
+                  name="Saída de Erro de Origem OLE DB">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[id]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[id]"
+                      name="id" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[titulo]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[titulo]"
+                      name="titulo" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[descricao]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[descricao]"
+                      name="descricao" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[dataCriacao]"
+                      dataType="dbDate"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[dataCriacao]"
+                      name="dataCriacao" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[imagem]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[imagem]"
+                      name="imagem" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[playlistID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[playlistID]"
+                      name="playlistID" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Criar Tabela Canal.Paths[Saída de Origem OLE DB]"
+              endId="Package\Criar Tabela Canal\CANAL.Inputs[Entrada de Destino OLE DB]"
+              name="Saída de Origem OLE DB"
+              startId="Package\Criar Tabela Canal\Origem OLE DB.Outputs[Saída de Origem OLE DB]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Criar Tabela Canal Estatisticas"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Tarefa Fluxo de Dados"
+      DTS:DTSID="{5CF3AC77-6895-4138-8E16-BADB76E0F9CC}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Criar Tabela Canal Estatisticas"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Coluna Derivada;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos os Direitos Reservados; http://www.microsoft.com/sql/support;0"
+              description="Cria novos valores de coluna aplicando expressões a colunas de entrada da transformação. Crie novas colunas ou substitua as existentes. Por exemplo, concatene os valores das colunas 'first name' e 'last name' para formar uma coluna 'full name'."
+              name="Add Data e Substituir NULL por 0"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Inputs[Entrada de Coluna Derivada]"
+                  description="Entrada para a Transformação Coluna Derivada"
+                  name="Entrada de Coluna Derivada">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Inputs[Entrada de Coluna Derivada].Columns[visualizacoes]"
+                      cachedDataType="i4"
+                      cachedName="visualizacoes"
+                      errorOrTruncationOperation="Computação"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[visualizacoes]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expressão de Coluna Derivada"
+                          name="Expression">[ISNULL](#{Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[visualizacoes]}) ? 0 : #{Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[visualizacoes]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expressão Amigável de Coluna Derivada"
+                          expressionType="Notify"
+                          name="FriendlyExpression">ISNULL(visualizacoes) ? 0 : visualizacoes</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Inputs[Entrada de Coluna Derivada].Columns[comentarios]"
+                      cachedDataType="i4"
+                      cachedName="comentarios"
+                      errorOrTruncationOperation="Computação"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[comentarios]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expressão de Coluna Derivada"
+                          name="Expression">[ISNULL](#{Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[comentarios]}) ? 0 : #{Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[comentarios]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expressão Amigável de Coluna Derivada"
+                          expressionType="Notify"
+                          name="FriendlyExpression">ISNULL(comentarios) ? 0 : comentarios</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Inputs[Entrada de Coluna Derivada].Columns[inscritos]"
+                      cachedDataType="i4"
+                      cachedName="inscritos"
+                      errorOrTruncationOperation="Computação"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[inscritos]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expressão de Coluna Derivada"
+                          name="Expression">[ISNULL](#{Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[inscritos]}) ? 0 : #{Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[inscritos]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expressão Amigável de Coluna Derivada"
+                          expressionType="Notify"
+                          name="FriendlyExpression">ISNULL(inscritos) ? 0 : inscritos</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Inputs[Entrada de Coluna Derivada].Columns[videos]"
+                      cachedDataType="i4"
+                      cachedName="videos"
+                      errorOrTruncationOperation="Computação"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[videos]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expressão de Coluna Derivada"
+                          name="Expression">[ISNULL](#{Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[videos]}) ? 0 : #{Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[videos]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expressão Amigável de Coluna Derivada"
+                          expressionType="Notify"
+                          name="FriendlyExpression">ISNULL(videos) ? 0 : videos</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Outputs[Saída de Coluna Derivada]"
+                  description="Saída Padrão da Transformação Coluna Derivada"
+                  exclusionGroup="1"
+                  name="Saída de Coluna Derivada"
+                  synchronousInputId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Inputs[Entrada de Coluna Derivada]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Outputs[Saída de Coluna Derivada].Columns[data]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Computação"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Outputs[Saída de Coluna Derivada].Columns[data]"
+                      name="data"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expressão de Coluna Derivada"
+                          name="Expression">[GETDATE]()</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expressão Amigável de Coluna Derivada"
+                          expressionType="Notify"
+                          name="FriendlyExpression">GETDATE()</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Outputs[Saída de Erro de Coluna Derivada]"
+                  description="Saída de Erro da Transformação Coluna Derivada"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Saída de Erro de Coluna Derivada"
+                  synchronousInputId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Inputs[Entrada de Coluna Derivada]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Outputs[Saída de Erro de Coluna Derivada].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Outputs[Saída de Erro de Coluna Derivada].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Outputs[Saída de Erro de Coluna Derivada].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Outputs[Saída de Erro de Coluna Derivada].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="Destino OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos os Direitos Reservados; http://www.microsoft.com/sql/support;4"
+              description="Destino OLE DB"
+              name="CANAL_ESTATISTICAS"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="O tempo em segundos antes que um comando expire. Zero indica uma expiração infinita."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica o nome do objeto de banco de dados usado para abrir um conjunto de linhas."
+                  name="OpenRowset">[dbo].[CANAL_ESTATISTICAS]</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica a variável que contém o nome do objeto de banco de dados usado para abrir um conjunto de linhas."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="O comando SQL a ser executado."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica a página de código de coluna a ser usada quando não há informações de página de código disponíveis a partir da fonte de dados."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forca o uso do valor da propriedade DefaultCodePage durante a descrição dos dados de caractere."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica o modo usado para acessar o banco de dados."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indica se os valores fornecidos para colunas de identidade serão copiados no destino. Se false, os valores para colunas de identidade serão gerados automaticamente no destino. Aplicável apenas se o carregamento rápido estiver ativado."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indica se as colunas que contêm null terão null inserido no destino. Se false, as colunas que contêm null terão seus valores padrão inseridos no destino. Aplicável apenas se o carregamento rápido estiver ativado."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica as opções a serem usadas com o carregamento rápido. Aplicável apenas se o carregamento rápido estiver ativado."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica quando confirmações são emitidas durante a inserção de dados. Um valor de 0 especifica que uma confirmação será emitida ao final da inserção de dados. Aplicável somente se o carregamento rápido estiver ativado."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Connections[OleDbConnection]"
+                  connectionManagerID="{D2AEC464-4F1D-4C16-A75F-DF9E86F88A45}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[CAROL-NOTE.YOUTUBE_STAGE]"
+                  description="A conexão de tempo de execução OLE DB usada para acessar o banco de dados."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB]"
+                  errorOrTruncationOperation="Inserir"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="Entrada de Destino OLE DB">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB].Columns[visualizacoes]"
+                      cachedDataType="i4"
+                      cachedName="visualizacoes"
+                      externalMetadataColumnId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB].ExternalColumns[VISUALIZACOES]"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[visualizacoes]" />
+                    <inputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB].Columns[comentarios]"
+                      cachedDataType="i4"
+                      cachedName="comentarios"
+                      externalMetadataColumnId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB].ExternalColumns[COMENTARIOS]"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[comentarios]" />
+                    <inputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB].Columns[inscritos]"
+                      cachedDataType="i4"
+                      cachedName="inscritos"
+                      externalMetadataColumnId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB].ExternalColumns[INSCRITOS]"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[inscritos]" />
+                    <inputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB].Columns[videos]"
+                      cachedDataType="i4"
+                      cachedName="videos"
+                      externalMetadataColumnId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB].ExternalColumns[VIDEOS]"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[videos]" />
+                    <inputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB].Columns[data]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="data"
+                      externalMetadataColumnId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB].ExternalColumns[DATA]"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Outputs[Saída de Coluna Derivada].Columns[data]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB].ExternalColumns[DATA]"
+                      dataType="dbDate"
+                      name="DATA" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB].ExternalColumns[VISUALIZACOES]"
+                      dataType="i4"
+                      name="VISUALIZACOES" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB].ExternalColumns[COMENTARIOS]"
+                      dataType="i4"
+                      name="COMENTARIOS" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB].ExternalColumns[INSCRITOS]"
+                      dataType="i4"
+                      name="INSCRITOS" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB].ExternalColumns[VIDEOS]"
+                      dataType="i4"
+                      name="VIDEOS" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Outputs[Saída de Erro de Destino OLE DB]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Saída de Erro de Destino OLE DB"
+                  synchronousInputId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Outputs[Saída de Erro de Destino OLE DB].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Outputs[Saída de Erro de Destino OLE DB].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Outputs[Saída de Erro de Destino OLE DB].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Outputs[Saída de Erro de Destino OLE DB].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="Origem OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos os Direitos Reservados; http://www.microsoft.com/sql/support;7"
+              description="Origem OLE DB"
+              name="Origem OLE DB"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="O tempo em segundos antes que um comando expire. Zero indica uma expiração infinita."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica o nome do objeto de banco de dados usado para abrir um conjunto de linhas."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Especifica a variável que contém o nome do objeto de banco de dados usado para abrir um conjunto de linhas."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="O comando SQL a ser executado."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">DECLARE @JSON VARCHAR(MAX);
+SET @JSON = (SELECT BulkColumn FROM OPENROWSET (BULK 'C:\Projetos\Youtube\Dados\canal.json', SINGLE_CLOB) as j)
+
+SELECT * FROM OPENJSON (@JSON, '$.items')
+WITH (
+	visualizacoes         int          '$.statistics.viewCount',
+	comentarios           int          '$.statistics.commentCount',
+	inscritos             int          '$.statistics.subscriberCount',
+	videos   		      int    	   '$.statistics.videoCount'
+)</property>
+                <property
+                  dataType="System.String"
+                  description="A variável que contém o comando SQL a ser executado."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica a página de código de coluna a ser usada quando não há informações de página de código disponíveis a partir da fonte de dados."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forca o uso do valor da propriedade DefaultCodePage durante a descrição dos dados de caractere."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica o modo usado para acessar o banco de dados."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="Os mapeamentos entre os parâmetros no comando SQL e as variáveis."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Connections[OleDbConnection]"
+                  connectionManagerID="{D2AEC464-4F1D-4C16-A75F-DF9E86F88A45}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[CAROL-NOTE.YOUTUBE_STAGE]"
+                  description="A conexão de tempo de execução OLE DB usada para acessar o banco de dados."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB]"
+                  name="Saída de Origem OLE DB">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[visualizacoes]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversão"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[visualizacoes]"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[visualizacoes]"
+                      name="visualizacoes"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[comentarios]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversão"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[comentarios]"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[comentarios]"
+                      name="comentarios"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[inscritos]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversão"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[inscritos]"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[inscritos]"
+                      name="inscritos"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[videos]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversão"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[videos]"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].Columns[videos]"
+                      name="videos"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[visualizacoes]"
+                      dataType="i4"
+                      name="visualizacoes" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[comentarios]"
+                      dataType="i4"
+                      name="comentarios" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[inscritos]"
+                      dataType="i4"
+                      name="inscritos" />
+                    <externalMetadataColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB].ExternalColumns[videos]"
+                      dataType="i4"
+                      name="videos" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB]"
+                  isErrorOut="true"
+                  name="Saída de Erro de Origem OLE DB">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[visualizacoes]"
+                      dataType="i4"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[visualizacoes]"
+                      name="visualizacoes" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[comentarios]"
+                      dataType="i4"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[comentarios]"
+                      name="comentarios" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[inscritos]"
+                      dataType="i4"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[inscritos]"
+                      name="inscritos" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[videos]"
+                      dataType="i4"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[videos]"
+                      name="videos" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Erro de Origem OLE DB].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Criar Tabela Canal Estatisticas.Paths[Saída de Coluna Derivada]"
+              endId="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS.Inputs[Entrada de Destino OLE DB]"
+              name="Saída de Coluna Derivada"
+              startId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Outputs[Saída de Coluna Derivada]" />
+            <path
+              refId="Package\Criar Tabela Canal Estatisticas.Paths[Saída de Origem OLE DB]"
+              endId="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0.Inputs[Entrada de Coluna Derivada]"
+              name="Saída de Origem OLE DB"
+              startId="Package\Criar Tabela Canal Estatisticas\Origem OLE DB.Outputs[Saída de Origem OLE DB]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Importar Dados"
+      DTS:CreationName="Microsoft.ScriptTask"
+      DTS:Description="Tarefa Script"
+      DTS:DTSID="{0E26C0A8-707D-4999-B573-22A70BAA6434}"
+      DTS:ExecutableType="Microsoft.ScriptTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Importar Dados"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ScriptProject
+          Name="ST_4e8f352e08744e728358bbc57ab61bc8"
+          VSTAMajorVersion="15"
+          VSTAMinorVersion="0"
+          Language="CSharp"
+          ReadOnlyVariables="User::apiKey,User::channelID,User::diretorioDados">
+          <ProjectItem
+            Name="Properties\Resources.resx"
+            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+</root>]]></ProjectItem>
+          <ProjectItem
+            Name="ST_4e8f352e08744e728358bbc57ab61bc8.csproj"
+            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9abf7e5b-1814-4d7c-a7ec-7dbb812fc777}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ST_4e8f352e08744e728358bbc57ab61bc8</RootNamespace>
+    <AssemblyName>ST_4e8f352e08744e728358bbc57ab61bc8</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptMain.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="ScriptTask" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" DebugInfoCommandLine="" DebugInfoWorkingDir="" IconImageList="" />
+        <Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex=""></Host>
+        <ProjectClient>
+          <HostIdentifier>SSIS_ST150</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_4e8f352e08744e728358bbc57ab61bc8.Properties.Settings.get_Default():ST_4e8f352e08744e728358bbc57ab61bc8.Properties.Sett" +
+    "ings")]
+
+namespace ST_4e8f352e08744e728358bbc57ab61bc8.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+          <ProjectItem
+            Name="ScriptMain.cs"
+            Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
+/* The Script Task allows you to perform virtually any operation that can be accomplished in
+ * a .Net application within the context of an Integration Services control flow. 
+ * 
+ * Expand the other regions which have "Help" prefixes for examples of specific ways to use
+ * Integration Services features within this script task. */
+#endregion
+
+
+#region Namespaces
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Runtime;
+using System.Windows.Forms;
+using System.Net;
+#endregion
+
+namespace ST_4e8f352e08744e728358bbc57ab61bc8
+{
+    /// <summary>
+    /// ScriptMain is the entry point class of the script.  Do not change the name, attributes,
+    /// or parent of this class.
+    /// </summary>
+	[Microsoft.SqlServer.Dts.Tasks.ScriptTask.SSISScriptTaskEntryPointAttribute]
+	public partial class ScriptMain : Microsoft.SqlServer.Dts.Tasks.ScriptTask.VSTARTScriptObjectModelBase
+	{
+        #region Help:  Using Integration Services variables and parameters in a script
+        /* To use a variable in this script, first ensure that the variable has been added to 
+         * either the list contained in the ReadOnlyVariables property or the list contained in 
+         * the ReadWriteVariables property of this script task, according to whether or not your
+         * code needs to write to the variable.  To add the variable, save this script, close this instance of
+         * Visual Studio, and update the ReadOnlyVariables and 
+         * ReadWriteVariables properties in the Script Transformation Editor window.
+         * To use a parameter in this script, follow the same steps. Parameters are always read-only.
+         * 
+         * Example of reading from a variable:
+         *  DateTime startTime = (DateTime) Dts.Variables["System::StartTime"].Value;
+         * 
+         * Example of writing to a variable:
+         *  Dts.Variables["User::myStringVariable"].Value = "new value";
+         * 
+         * Example of reading from a package parameter:
+         *  int batchId = (int) Dts.Variables["$Package::batchId"].Value;
+         *  
+         * Example of reading from a project parameter:
+         *  int batchId = (int) Dts.Variables["$Project::batchId"].Value;
+         * 
+         * Example of reading from a sensitive project parameter:
+         *  int batchId = (int) Dts.Variables["$Project::batchId"].GetSensitiveValue();
+         * */
+
+        #endregion
+
+        #region Help:  Firing Integration Services events from a script
+        /* This script task can fire events for logging purposes.
+         * 
+         * Example of firing an error event:
+         *  Dts.Events.FireError(18, "Process Values", "Bad value", "", 0);
+         * 
+         * Example of firing an information event:
+         *  Dts.Events.FireInformation(3, "Process Values", "Processing has started", "", 0, ref fireAgain)
+         * 
+         * Example of firing a warning event:
+         *  Dts.Events.FireWarning(14, "Process Values", "No values received for input", "", 0);
+         * */
+        #endregion
+
+        #region Help:  Using Integration Services connection managers in a script
+        /* Some types of connection managers can be used in this script task.  See the topic 
+         * "Working with Connection Managers Programatically" for details.
+         * 
+         * Example of using an ADO.Net connection manager:
+         *  object rawConnection = Dts.Connections["Sales DB"].AcquireConnection(Dts.Transaction);
+         *  SqlConnection myADONETConnection = (SqlConnection)rawConnection;
+         *  //Use the connection in some code here, then release the connection
+         *  Dts.Connections["Sales DB"].ReleaseConnection(rawConnection);
+         *
+         * Example of using a File connection manager
+         *  object rawConnection = Dts.Connections["Prices.zip"].AcquireConnection(Dts.Transaction);
+         *  string filePath = (string)rawConnection;
+         *  //Use the connection in some code here, then release the connection
+         *  Dts.Connections["Prices.zip"].ReleaseConnection(rawConnection);
+         * */
+        #endregion
+
+
+		/// <summary>
+        /// This method is called when this script task executes in the control flow.
+        /// Before returning from this method, set the value of Dts.TaskResult to indicate success or failure.
+        /// To open Help, press F1.
+        /// </summary>
+		public void Main()
+		{
+			string key = Dts.Variables["User::apiKey"].Value.ToString();
+            string id = Dts.Variables["User::channelID"].Value.ToString();
+            string diretorio = Dts.Variables["User::diretorioDados"].Value.ToString();
+
+            try
+            {
+                string jsonCanal = new WebClient().DownloadString("https://youtube.googleapis.com/youtube/v3/channels?id=" + id + "&key=" + key + "&part=snippet,contentDetails,statistics&fields=items(id,snippet(title,description,publishedAt,thumbnails(medium(url))),contentDetails(relatedPlaylists(uploads)),statistics)");
+                System.IO.File.WriteAllText(diretorio + @"canal.json", jsonCanal);
+
+                Dts.TaskResult = (int)ScriptResults.Success;
+            }
+            catch (WebException e)
+            {
+                if (((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.Forbidden)
+                {
+                    Dts.Events.FireError(403, "Quota Excedida", "A quota de requisições foi atingida", String.Empty, 0);
+                    Dts.TaskResult = (int)ScriptResults.Failure;
+                }
+
+                else
+                {
+                    Boolean fireAgain = true;
+                    Dts.Events.FireInformation(0, "Dados Inexistentes", "Não foram encontrados dados para esse canal", String.Empty, 0, ref fireAgain);
+                    Dts.TaskResult = (int)ScriptResults.Success;
+                }
+            }
+        }
+
+        #region ScriptResults declaration
+        /// <summary>
+        /// This enum provides a convenient shorthand within the scope of this class for setting the
+        /// result of the script.
+        /// 
+        /// This code was generated automatically.
+        /// </summary>
+        enum ScriptResults
+        {
+            Success = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Success,
+            Failure = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Failure
+        };
+        #endregion
+
+	}
+}]]></ProjectItem>
+          <ProjectItem
+            Name="Project"
+            Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
+  <msb:PropertyGroup>
+    <msb:CodeName>ST_4e8f352e08744e728358bbc57ab61bc8</msb:CodeName>
+    <msb:Language>msBuild</msb:Language>
+    <msb:DisplayName>ST_4e8f352e08744e728358bbc57ab61bc8</msb:DisplayName>
+    <msb:ProjectId>{61477F2C-9969-4ECF-85ED-8BDFAEF74C59}</msb:ProjectId>
+  </msb:PropertyGroup>
+  <msb:ItemGroup>
+    <msb:Project Include="ST_4e8f352e08744e728358bbc57ab61bc8.csproj" />
+    <msb:File Include="Properties\Settings.Designer.cs" />
+    <msb:File Include="Properties\Settings.settings" />
+    <msb:File Include="Properties\AssemblyInfo.cs" />
+    <msb:File Include="Properties\Resources.resx" />
+    <msb:File Include="Properties\Resources.Designer.cs" />
+    <msb:File Include="ScriptMain.cs" />
+  </msb:ItemGroup>
+</c:Project>]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_4e8f352e08744e728358bbc57ab61bc8")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_4e8f352e08744e728358bbc57ab61bc8")]
+[assembly: AssemblyCopyright("Copyright @  2022")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Resources.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_4e8f352e08744e728358bbc57ab61bc8.Properties.Resources.get_ResourceManager():System.Resources.Resou" +
+    "rceManager")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_4e8f352e08744e728358bbc57ab61bc8.Properties.Resources.get_Culture():System.Globalization.CultureIn" +
+    "fo")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_4e8f352e08744e728358bbc57ab61bc8.Properties.Resources.set_Culture(System.Globalization.CultureInfo" +
+    "):Void")]
+
+namespace ST_4e8f352e08744e728358bbc57ab61bc8.Properties {
+    
+    
+    /// <summary>
+    ///   A strongly-typed resource class, for looking up localized strings, etc.
+    /// </summary>
+    // This class was auto-generated by the StronglyTypedResourceBuilder
+    // class via a tool like ResGen or Visual Studio.
+    // To add or remove a member, edit your .ResX file then rerun ResGen
+    // with the /str option, or rebuild your VS project.
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    internal class Resources {
+        
+        private static global::System.Resources.ResourceManager resourceMan;
+        
+        private static global::System.Globalization.CultureInfo resourceCulture;
+        
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        internal Resources() {
+        }
+        
+        /// <summary>
+        ///   Returns the cached ResourceManager instance used by this class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if ((resourceMan == null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ST_4e8f352e08744e728358bbc57ab61bc8.Properties.Resources", typeof(Resources).Assembly);
+                    resourceMan = temp;
+                }
+                return resourceMan;
+            }
+        }
+        
+        /// <summary>
+        ///   Overrides the current thread's CurrentUICulture property for all
+        ///   resource lookups using this strongly typed resource class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
+                return resourceCulture;
+            }
+            set {
+                resourceCulture = value;
+            }
+        }
+    }
+}]]></ProjectItem>
+          <BinaryItem
+            Name="ST_4e8f352e08744e728358bbc57ab61bc8.dll">TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAOKyzGIAAAAAAAAAAOAAIiALATAAABQAAAAIAAAAAAAAPjMA
+AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAGAAAAAAAAAACAAAAAAgAAAAAAAAMAYIUAABAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAOwyAABPAAAAAEAAAHgEAAAAAAAAAAAAAAAAAAAA
+AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAARBMAAAAgAAAAFAAAAAIA
+AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAHgEAAAAQAAAAAYAAAAWAAAAAAAAAAAAAAAAAABAAABA
+LnJlbG9jAAAMAAAAAGAAAAACAAAAHAAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAAAg
+MwAAAAAAAEgAAAACAAUACCIAACwQAAABAAAAAAAAADQyAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAABswBwA0AQAAAQAAEQIoEAAACm8RAAAKcgEAAHBvEgAACm8T
+AAAKbxQAAAoKAigQAAAKbxEAAApyGwAAcG8SAAAKbxMAAApvFAAACgsCKBAAAApvEQAACnI7AABw
+bxIAAApvEwAACm8UAAAKDHMVAAAKG40dAAABJRZyZQAAcKIlFweiJRhy0wAAcKIlGQaiJRpy3wAA
+cKIoFgAACigXAAAKDQhyOgIAcCgYAAAKCSgZAAAKAigQAAAKFm8aAAAK3n5vGwAACnQgAAABbxwA
+AAogkwEAADM0AigQAAAKbx0AAAogkwEAAHJQAgBwcm4CAHB+HgAAChZvHwAACiYCKBAAAAoXbxoA
+AAorMhcTBAIoEAAACm8dAAAKFnK2AgBwctwCAHB+HgAAChYSBG8gAAAKAigQAAAKFm8aAAAK3gAq
+ARAAAAAAYABVtQB+DwAAAR4CKCEAAAoqHgIoIgAACiqufgEAAAQtHnI0AwBw0AMAAAIoIwAACm8k
+AAAKcyUAAAqAAQAABH4BAAAEKhp+AgAABCoeAoACAAAEKhp+AwAABCoeAigmAAAKKi5zCAAABoAD
+AAAEKgAAQlNKQgEAAQAAAAAADAAAAHY0LjAuMzAzMTkAAAAABQBsAAAAMAQAACN+AACcBAAALAYA
+ACNTdHJpbmdzAAAAAMgKAACoAwAAI1VTAHAOAAAQAAAAI0dVSUQAAACADgAArAEAACNCbG9iAAAA
+AAAAAAIAAAFXHaIBCQMAAAD6ATMAFgAAAQAAACUAAAAFAAAABgAAAAkAAAABAAAAJgAAAAIAAAAQ
+AAAAAQAAAAIAAAADAAAABAAAAAEAAAAEAAAAAQAAAAEAAAAAAM4DAQAAAAAABgBvAtkEBgD+AtkE
+BgC7AcYEDwBNBQAABgDoAVwEBgBSAlwEBgAzAlwEBgDlAlwEBgCPAlwEBgCoAlwEBgD/AVwEBgAa
+AiwDCgDDAn0DCgAdAX0DDgBuBNkFBgAGBP8DBgCeAcYEBgDSBf8DBgCLBPkEBgB7BEcEDgBuAbgD
+DgDPAbgDDgA5ATIEBgCDAdkECgCmA30DEgCPBcgAEgCWAMgADgD/BdkFBgBXA/8DBgDDAC4ADgBi
+AdkFDgBeAdkFDgCHANkFCgCbBH0DBgDoAP8DBgCfAP8DBgAaBlwEAAAAACUAAAAAAAEAAQABABAA
+FwQBADkAAQABAAAAEAAABVwFSQABAAMAAAEQAJkFXAVdAAMABwADAQAAsgUAAEEABAAKABEACwSt
+ABEADQGxABEAaAC1AAYGVwC5AFaAogW8AFaA7QC8AFAgAAAAAIYAHQQGAAEAoCEAAAAAhhi5BAYA
+AQCoIQAAAACDGLkEBgABALAhAAAAAJMIhwTAAAEA3CEAAAAAkwj1AMUAAQDjIQAAAACTCAEBygAB
+AOshAAAAAJYI5AXQAAIA8iEAAAAAhhi5BAYAAgD6IQAAAACRGL8E1QACAAAAAQAmAwkAuQQBABEA
+uQQGABkAuQQKACkAuQQQADEAuQQQADkAuQQQAEEAuQQQAEkAuQQQAFEAuQQQAFkAuQQQAGEAuQQQ
+AGkAuQQGAIkAuQQGALEAuQQVAMEAuQQGAHEAqgUjAMkAiwUoANEA9gMtANkAHAMzAJEAVQM3AOEA
+uQQGAOkAywU7AOEARgNBAOkAywVGAPEACQZMAMkA8AUBAHkAUQFSAAEBeABXAMkAwAVdAOkAIwZj
+ABEBrwRmABEBIgRvAHEAuQQGAJEAuQQGABkBsQB6ABkBFgaDAJkAuQSJALkAuQQGAAgAFACjAAgA
+GACoACkAcwAQAS4ACwDoAC4AEwDxAC4AGwAQAS4AIwAZAS4AKwBCAS4AMwBCAS4AOwBCAS4AQwAZ
+AS4ASwBIAS4AUwBCAS4AWwBfAUMAYwCoAEkAcwAQAWEAewCoAGMAawCoABsAAwABAAQAAwAAAIsE
+2QAAABUB3gAAAOgF4wACAAQAAwACAAUABQABAAYABQACAAcABwAEgAAAAQAAACMgWZAAAAAAAAAB
+AAAABAAAAAAAAAAAAAAAkQBfAAAAAAAPAAAAAAAAAAAAAACaAF4DAAAAAAQAAAAAAAAAAAAAAJEA
+/wMAAAAADwAAAAAAAAAAAAAAmgA4AAAAAAAAAAAAAQAAAAoFAAAFAAIAAAAAAABTVF80ZThmMzUy
+ZTA4NzQ0ZTcyODM1OGJiYzU3YWI2MWJjOAA8TW9kdWxlPgBTeXN0ZW0uSU8ATWljcm9zb2Z0LlNx
+bFNlcnZlci5NYW5hZ2VkRFRTAHZhbHVlX18AbXNjb3JsaWIAZGVmYXVsdEluc3RhbmNlAGdldF9T
+dGF0dXNDb2RlAEh0dHBTdGF0dXNDb2RlAFZhcmlhYmxlAFJ1bnRpbWVUeXBlSGFuZGxlAEdldFR5
+cGVGcm9tSGFuZGxlAEZpbGUATWljcm9zb2Z0LlNxbFNlcnZlci5EdHMuUnVudGltZQBUeXBlAEZh
+aWx1cmUAZ2V0X0N1bHR1cmUAc2V0X0N1bHR1cmUAcmVzb3VyY2VDdWx0dXJlAFZTVEFSVFNjcmlw
+dE9iamVjdE1vZGVsQmFzZQBBcHBsaWNhdGlvblNldHRpbmdzQmFzZQBnZXRfUmVzcG9uc2UASHR0
+cFdlYlJlc3BvbnNlAEVkaXRvckJyb3dzYWJsZVN0YXRlAENvbXBpbGVyR2VuZXJhdGVkQXR0cmli
+dXRlAERlYnVnZ2VyTm9uVXNlckNvZGVBdHRyaWJ1dGUARGVidWdnYWJsZUF0dHJpYnV0ZQBFZGl0
+b3JCcm93c2FibGVBdHRyaWJ1dGUAQXNzZW1ibHlUaXRsZUF0dHJpYnV0ZQBBc3NlbWJseVRyYWRl
+bWFya0F0dHJpYnV0ZQBUYXJnZXRGcmFtZXdvcmtBdHRyaWJ1dGUAQXNzZW1ibHlDb25maWd1cmF0
+aW9uQXR0cmlidXRlAEFzc2VtYmx5RGVzY3JpcHRpb25BdHRyaWJ1dGUAQ29tcGlsYXRpb25SZWxh
+eGF0aW9uc0F0dHJpYnV0ZQBBc3NlbWJseVByb2R1Y3RBdHRyaWJ1dGUAQXNzZW1ibHlDb3B5cmln
+aHRBdHRyaWJ1dGUAU1NJU1NjcmlwdFRhc2tFbnRyeVBvaW50QXR0cmlidXRlAEFzc2VtYmx5Q29t
+cGFueUF0dHJpYnV0ZQBSdW50aW1lQ29tcGF0aWJpbGl0eUF0dHJpYnV0ZQBnZXRfVmFsdWUAdmFs
+dWUAU3lzdGVtLlJ1bnRpbWUuVmVyc2lvbmluZwBEb3dubG9hZFN0cmluZwBUb1N0cmluZwBNaWNy
+b3NvZnQuU3FsU2VydmVyLlNjcmlwdFRhc2sATWljcm9zb2Z0LlNxbFNlcnZlci5EdHMuVGFza3Mu
+U2NyaXB0VGFzawBTY3JpcHRPYmplY3RNb2RlbABTeXN0ZW0uQ29tcG9uZW50TW9kZWwAU1RfNGU4
+ZjM1MmUwODc0NGU3MjgzNThiYmM1N2FiNjFiYzguZGxsAGdldF9JdGVtAFN5c3RlbQBFbnVtAHJl
+c291cmNlTWFuAFNjcmlwdE1haW4ARmlyZUluZm9ybWF0aW9uAFN5c3RlbS5Db25maWd1cmF0aW9u
+AFN5c3RlbS5HbG9iYWxpemF0aW9uAFN5c3RlbS5SZWZsZWN0aW9uAFdlYkV4Y2VwdGlvbgBDdWx0
+dXJlSW5mbwBnZXRfUmVzb3VyY2VNYW5hZ2VyAEV2ZW50c09iamVjdFdyYXBwZXIARmlyZUVycm9y
+AC5jdG9yAC5jY3RvcgBTeXN0ZW0uRGlhZ25vc3RpY3MAU3lzdGVtLlJ1bnRpbWUuQ29tcGlsZXJT
+ZXJ2aWNlcwBTeXN0ZW0uUmVzb3VyY2VzAFNUXzRlOGYzNTJlMDg3NDRlNzI4MzU4YmJjNTdhYjYx
+YmM4LlByb3BlcnRpZXMuUmVzb3VyY2VzLnJlc291cmNlcwBEZWJ1Z2dpbmdNb2RlcwBTVF80ZThm
+MzUyZTA4NzQ0ZTcyODM1OGJiYzU3YWI2MWJjOC5Qcm9wZXJ0aWVzAGdldF9WYXJpYWJsZXMAU2V0
+dGluZ3MAU3VjY2VzcwBnZXRfRHRzAFNjcmlwdFJlc3VsdHMAZ2V0X0V2ZW50cwBDb25jYXQAT2Jq
+ZWN0AFN5c3RlbS5OZXQAZ2V0X0RlZmF1bHQAc2V0X1Rhc2tSZXN1bHQAV2ViQ2xpZW50AFdyaXRl
+QWxsVGV4dABnZXRfQXNzZW1ibHkARW1wdHkAAAAAABlVAHMAZQByADoAOgBhAHAAaQBLAGUAeQAA
+H1UAcwBlAHIAOgA6AGMAaABhAG4AbgBlAGwASQBEAAApVQBzAGUAcgA6ADoAZABpAHIAZQB0AG8A
+cgBpAG8ARABhAGQAbwBzAABtaAB0AHQAcABzADoALwAvAHkAbwB1AHQAdQBiAGUALgBnAG8AbwBn
+AGwAZQBhAHAAaQBzAC4AYwBvAG0ALwB5AG8AdQB0AHUAYgBlAC8AdgAzAC8AYwBoAGEAbgBuAGUA
+bABzAD8AaQBkAD0AAAsmAGsAZQB5AD0AAIFZJgBwAGEAcgB0AD0AcwBuAGkAcABwAGUAdAAsAGMA
+bwBuAHQAZQBuAHQARABlAHQAYQBpAGwAcwAsAHMAdABhAHQAaQBzAHQAaQBjAHMAJgBmAGkAZQBs
+AGQAcwA9AGkAdABlAG0AcwAoAGkAZAAsAHMAbgBpAHAAcABlAHQAKAB0AGkAdABsAGUALABkAGUA
+cwBjAHIAaQBwAHQAaQBvAG4ALABwAHUAYgBsAGkAcwBoAGUAZABBAHQALAB0AGgAdQBtAGIAbgBh
+AGkAbABzACgAbQBlAGQAaQB1AG0AKAB1AHIAbAApACkAKQAsAGMAbwBuAHQAZQBuAHQARABlAHQA
+YQBpAGwAcwAoAHIAZQBsAGEAdABlAGQAUABsAGEAeQBsAGkAcwB0AHMAKAB1AHAAbABvAGEAZABz
+ACkAKQAsAHMAdABhAHQAaQBzAHQAaQBjAHMAKQAAFWMAYQBuAGEAbAAuAGoAcwBvAG4AAB1RAHUA
+bwB0AGEAIABFAHgAYwBlAGQAaQBkAGEAAEdBACAAcQB1AG8AdABhACAAZABlACAAcgBlAHEAdQBp
+AHMAaQDnAPUAZQBzACAAZgBvAGkAIABhAHQAaQBuAGcAaQBkAGEAASVEAGEAZABvAHMAIABJAG4A
+ZQB4AGkAcwB0AGUAbgB0AGUAcwAAV04A4wBvACAAZgBvAHIAYQBtACAAZQBuAGMAbwBuAHQAcgBh
+AGQAbwBzACAAZABhAGQAbwBzACAAcABhAHIAYQAgAGUAcwBzAGUAIABjAGEAbgBhAGwAAXFTAFQA
+XwA0AGUAOABmADMANQAyAGUAMAA4ADcANAA0AGUANwAyADgAMwA1ADgAYgBiAGMANQA3AGEAYgA2
+ADEAYgBjADgALgBQAHIAbwBwAGUAcgB0AGkAZQBzAC4AUgBlAHMAbwB1AHIAYwBlAHMAAAAANRdo
+mdu2LUyZ1o59ESDtTwAEIAEBCAMgAAEFIAEBEREEIAEBDgUgAQERVQcHBQ4ODg4CBCAAEmUEIAAS
+aQUgARJtHAMgABwDIAAOBQABDh0OBCABDg4FAAIODg4FAAIBDg4EIAASfQUgABGAhQUgABKAiQIG
+DgggBQIIDg4OCAogBgEIDg4OCBACCAABEoCNEYCRBSAAEoCVByACAQ4SgJUIt3pcVhk04IkIiYRd
+zYCAzJEEAAAAAAQBAAAAAwYSTQMGElEDBhIQAgYIAwYRFAQAABJNBAAAElEFAAEBElEEAAASEAMA
+AAEECAASTQQIABJRBAgAEhAIAQAIAAAAAAAeAQABAFQCFldyYXBOb25FeGNlcHRpb25UaHJvd3MB
+CAEAAgAAAAAAKAEAI1NUXzRlOGYzNTJlMDg3NDRlNzI4MzU4YmJjNTdhYjYxYmM4AAAFAQAAAAAW
+AQARQ29weXJpZ2h0IEAgIDIwMjIAAEkBABouTkVURnJhbWV3b3JrLFZlcnNpb249djQuNwEAVA4U
+RnJhbWV3b3JrRGlzcGxheU5hbWUSLk5FVCBGcmFtZXdvcmsgNC43AAAAtAAAAM7K774BAAAAkQAA
+AGxTeXN0ZW0uUmVzb3VyY2VzLlJlc291cmNlUmVhZGVyLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAu
+MC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkjU3lz
+dGVtLlJlc291cmNlcy5SdW50aW1lUmVzb3VyY2VTZXQCAAAAAAAAAAAAAABQQURQQURQtAAAABQz
+AAAAAAAAAAAAAC4zAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgMwAAAAAAAAAAAAAAAF9Db3JE
+bGxNYWluAG1zY29yZWUuZGxsAAAAAAD/JQAgABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAQAQAAAAGAAAgAAAAAAAAAAAAAAAAAAAAQABAAAAMAAAgAAAAAAAAAAAAAAAAAAAAQAAAAAA
+SAAAAFhAAAAaBAAAAAAAAAAAAAAaBDQAAABWAFMAXwBWAEUAUgBTAEkATwBOAF8ASQBOAEYATwAA
+AAAAvQTv/gAAAQAAAAEAWZAjIAAAAQBZkCMgPwAAAAAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAEQA
+AAABAFYAYQByAEYAaQBsAGUASQBuAGYAbwAAAAAAJAAEAAAAVAByAGEAbgBzAGwAYQB0AGkAbwBu
+AAAAAAAAALAEegMAAAEAUwB0AHIAaQBuAGcARgBpAGwAZQBJAG4AZgBvAAAAVgMAAAEAMAAwADAA
+MAAwADQAYgAwAAAAGgABAAEAQwBvAG0AbQBlAG4AdABzAAAAAAAAACIAAQABAEMAbwBtAHAAYQBu
+AHkATgBhAG0AZQAAAAAAAAAAAHAAJAABAEYAaQBsAGUARABlAHMAYwByAGkAcAB0AGkAbwBuAAAA
+AABTAFQAXwA0AGUAOABmADMANQAyAGUAMAA4ADcANAA0AGUANwAyADgAMwA1ADgAYgBiAGMANQA3
+AGEAYgA2ADEAYgBjADgAAAA+AA8AAQBGAGkAbABlAFYAZQByAHMAaQBvAG4AAAAAADEALgAwAC4A
+OAAyADIANwAuADMANgA5ADUAMwAAAAAAcAAoAAEASQBuAHQAZQByAG4AYQBsAE4AYQBtAGUAAABT
+AFQAXwA0AGUAOABmADMANQAyAGUAMAA4ADcANAA0AGUANwAyADgAMwA1ADgAYgBiAGMANQA3AGEA
+YgA2ADEAYgBjADgALgBkAGwAbAAAAEgAEgABAEwAZQBnAGEAbABDAG8AcAB5AHIAaQBnAGgAdAAA
+AEMAbwBwAHkAcgBpAGcAaAB0ACAAQAAgACAAMgAwADIAMgAAACoAAQABAEwAZQBnAGEAbABUAHIA
+YQBkAGUAbQBhAHIAawBzAAAAAAAAAAAAeAAoAAEATwByAGkAZwBpAG4AYQBsAEYAaQBsAGUAbgBh
+AG0AZQAAAFMAVABfADQAZQA4AGYAMwA1ADIAZQAwADgANwA0ADQAZQA3ADIAOAAzADUAOABiAGIA
+YwA1ADcAYQBiADYAMQBiAGMAOAAuAGQAbABsAAAAaAAkAAEAUAByAG8AZAB1AGMAdABOAGEAbQBl
+AAAAAABTAFQAXwA0AGUAOABmADMANQAyAGUAMAA4ADcANAA0AGUANwAyADgAMwA1ADgAYgBiAGMA
+NQA3AGEAYgA2ADEAYgBjADgAAABCAA8AAQBQAHIAbwBkAHUAYwB0AFYAZQByAHMAaQBvAG4AAAAx
+AC4AMAAuADgAMgAyADcALgAzADYAOQA1ADMAAAAAAEYADwABAEEAcwBzAGUAbQBiAGwAeQAgAFYA
+ZQByAHMAaQBvAG4AAAAxAC4AMAAuADgAMgAyADcALgAzADYAOQA1ADMAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAMAAAAQDMAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
+        </ScriptProject>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Truncate Tabela Canal"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarefa Executar SQL"
+      DTS:DTSID="{FB4C6045-B532-4D7C-A57E-04D6F9261A86}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Truncate Tabela Canal"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D2AEC464-4F1D-4C16-A75F-DF9E86F88A45}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE CANAL&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restrição]"
+      DTS:CreationName=""
+      DTS:DTSID="{F43ADDF8-80C3-4412-9155-21AA1E242806}"
+      DTS:From="Package\Importar Dados"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restrição"
+      DTS:To="Package\Truncate Tabela Canal" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restrição 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{6B2B40FA-BFCC-4C0C-9694-7C850BAFA275}"
+      DTS:From="Package\Truncate Tabela Canal"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restrição 1"
+      DTS:To="Package\Criar Tabela Canal" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restrição 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{B2B34DF1-8B37-4626-9CC5-05978F6A8C1F}"
+      DTS:From="Package\Criar Tabela Canal"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restrição 2"
+      DTS:To="Package\Buscar Data Estatisticas" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restrição 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{B7FE0184-BAB4-47E0-9F14-550C4C843A7D}"
+      DTS:EvalOp="1"
+      DTS:Expression="@[User::existeDia] == false"
+      DTS:From="Package\Buscar Data Estatisticas"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restrição 4"
+      DTS:To="Package\Criar Tabela Canal Estatisticas" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--Esta seção CDATA contém as informações de layout do pacote. A seção inclui informações como coordenadas (x,y), largura e altura.-->
+<!--Se você editar manualmente esta seção e cometer algum erro, poderá excluí-la. -->
+<!--O pacote ainda poderá ser carregado normalmente, mas as informações de layout anteriores serão perdidas e o designer reorganizará automaticamente os elementos na superfície de design.-->
+<Objects
+  Version="8">
+  <!--Cada nó abaixo conterá propriedades que não afetam o comportamento em tempo de execução.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="191.2,41.6"
+          Id="Package\Buscar Data Estatisticas"
+          TopLeft="42.5333373334668,229.973332942115" />
+        <NodeLayout
+          Size="165.6,41.6"
+          Id="Package\Criar Tabela Canal"
+          TopLeft="55.8666701369813,156.426667884403" />
+        <NodeLayout
+          Size="220.8,41.6"
+          Id="Package\Criar Tabela Canal Estatisticas"
+          TopLeft="30.666665448083,302.400000495911" />
+        <NodeLayout
+          Size="149.6,41.6"
+          Id="Package\Importar Dados"
+          TopLeft="65.3333307372203,12.4800000991822" />
+        <NodeLayout
+          Size="184,41.6"
+          Id="Package\Truncate Tabela Canal"
+          TopLeft="47.3333314524758,84.5866673389016" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restrição]"
+          TopLeft="139.733331094848,54.0800000991822">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,30.5066672397194"
+              Start="0,0"
+              End="0,23.0066672397194">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.0066672397194" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restrição 1]"
+          TopLeft="139.000000794729,126.186667338902">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,30.2400005455016"
+              Start="0,0"
+              End="0,22.7400005455016">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22.7400005455016" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restrição 2]"
+          TopLeft="138.400003735224,198.026667884403">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,31.9466650577117"
+              Start="0,0"
+              End="0,24.4466650577117">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,24.4466650577117" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restrição 4]"
+          TopLeft="139.600001390775,271.573332942115">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,30.826667553796"
+              Start="0,0"
+              End="0,23.326667553796">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.326667553796" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-8,3.66333377689799,16,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Criar Tabela Canal">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="153.6,41.6"
+          Id="Package\Criar Tabela Canal\Origem OLE DB"
+          TopLeft="37.4999987284343,6.19333333884344" />
+        <NodeLayout
+          Size="112.8,41.6"
+          Id="Package\Criar Tabela Canal\CANAL"
+          TopLeft="51.9999979337057,97.7600007769267" />
+        <EdgeLayout
+          Id="Package\Criar Tabela Canal.Paths[Saída de Origem OLE DB]"
+          TopLeft="111.34999833107,47.7933333388434">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,49.9666674380833"
+              Start="0,0"
+              End="0,42.4666674380833">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,42.4666674380833" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Criar Tabela Canal\CANAL">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Criar Tabela Canal\Origem OLE DB">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Criar Tabela Canal Estatisticas">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="192.8,41.6"
+          Id="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS"
+          TopLeft="80.8,167.2" />
+        <NodeLayout
+          Size="153.6,41.6"
+          Id="Package\Criar Tabela Canal Estatisticas\Origem OLE DB"
+          TopLeft="102.3,10.3" />
+        <NodeLayout
+          Size="232,41.6"
+          Id="Package\Criar Tabela Canal Estatisticas\Add Data e Substituir NULL por 0"
+          TopLeft="59.2,87.2" />
+        <EdgeLayout
+          Id="Package\Criar Tabela Canal Estatisticas.Paths[Saída de Origem OLE DB]"
+          TopLeft="177.15,51.9">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,35.3"
+              Start="0,0"
+              End="0,27.8">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,27.8" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Criar Tabela Canal Estatisticas.Paths[Saída de Coluna Derivada]"
+          TopLeft="176.2,128.8">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,38.4"
+              Start="0,0"
+              End="0,30.9">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,30.9" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Criar Tabela Canal Estatisticas\CANAL_ESTATISTICAS">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Criar Tabela Canal Estatisticas\Origem OLE DB">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
